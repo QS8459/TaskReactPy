@@ -1,0 +1,6 @@
+.env
+.ven
+requirements.txt;
+__pycache__
+.*
+__*

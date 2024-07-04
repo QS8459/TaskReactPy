@@ -1,0 +1,94 @@
+/* Define the container for the grid */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Define the row */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+/* Define the column */
+.col {
+  flex: 1 0 100%;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+/* Define the column widths for different screen sizes */
+@media (min-width: 576px) {
+  .col-sm {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .col-sm-1 {
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+  }
+  .col-sm-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
+  /* ... and so on for each column width up to col-sm-12 */
+}
+
+@media (min-width: 768px) {
+  .col-md {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .col-md-1 {
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+  }
+  .col-md-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
+  /* ... and so on for each column width up to col-md-12 */
+}
+
+@media (min-width: 992px) {
+  .col-lg {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .col-lg-1 {
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+  }
+  .col-lg-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
+  /* ... and so on for each column width up to col-lg-12 */
+}
+
+@media (min-width: 1200px) {
+  .col-xl {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .col-xl-1 {
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+  }
+  .col-xl-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
+  /* ... and so on for each column width up to col-xl-12 */
+}
+
+/* Define the box */
+.box {
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
+}
