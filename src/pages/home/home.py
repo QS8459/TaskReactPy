@@ -1,4 +1,4 @@
-from src.components.navbar.navbar import NavBar, NavItemProps;
+from src.components.navbar.navbar import NavBar, NavBarProps;
 from src.components.list.list import List, ListProps;
 from reactpy import html, component, use_state;
 from src.components.utils import check_auth;
@@ -16,8 +16,8 @@ def Home():
 
         html._(NavBar(
             [
-            NavItemProps(label="Add Task", path="/task", is_active=True),
-            NavItemProps(label="About", path="/about", is_active=False)
+            NavBarProps(title="Add Task", url="/task"),
+            NavBarProps(title="About", url="/about")
             ]
         )),
         html._(

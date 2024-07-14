@@ -6,6 +6,10 @@ def check_auth():
 
     return False;
 
-
-if __name__  == "__main__":
-    print(check_auth());
+def logout():
+    try:
+        S.headers.pop("Authorization");
+        return True;
+    except Exception:
+        return "Something went wrong while logout!";
+    

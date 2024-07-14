@@ -9,7 +9,7 @@ class ErrorProps:
     callback: Callable;
     display: bool = False
     message: str | None = None;
-    type: Literal['401','404','500', '405','400', '503'] | None = None;
+    type: Literal['401','404','500', '405','400', '503', '422'] | None = None;
 
     def set_display_false(self):
         self.display = False
@@ -37,7 +37,7 @@ def ErrorToast(props: ErrorProps):
             html.div(
                 {"class":"toast-body"},
                 html.p(props.message),
-                html.p(props.type)
+                f"Status Code\r", html.p(props.type)
             )
         )
     )

@@ -8,6 +8,28 @@ from src.components.error_pages.smt_went_worng_toast import ErrorProps, ErrorToa
 import time;
 
 
+local_style = html.style(
+    """
+    body {
+        background: linear-gradient(235deg, rgba(158,57,201,1) 0%, rgba(209,81,81,1) 96%);
+        height: 100%;
+        # display: flex;
+        # justify-content: center;
+        # align-items: center;
+    }
+    .transparent-box {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2rem;
+        border-radius: 10px;
+    }
+    """
+)
+
+
+
+
+
+
 @component
 def Login():
     payload,setPayload = use_state({"username":"","password":""});
@@ -35,8 +57,10 @@ def Login():
             print(request.as_dict.get('token'));
             setPageState(True);
             if request.as_dict.get("token"):
+                print(request.status_code)
                 S.headers.update({"Authorization":f"Bearer {request.as_dict.get('token')}"})
             else:
+                print(request.status_code);
                 setPageState(False);
                 set_loading(False);
                 setPayload({'username':"","password":''})
@@ -52,59 +76,61 @@ def Login():
             set_loading(False);
             set_error(
                 {**error,
-                 "message": e,
+                 "message": "Something went wrong!",
                  "display": True,
                  "type": "500"
                  },
             )
 
-    return html.div(
+    return html._(
+            local_style,
+            html.div(
+            {'class':"d-flex justify-content-center align-items-center vh-100"},
 
-        {'class':"d-flex justify-content-center align-items-center vh-100"},
-
-        html.script("window.location.href = '/home';") if page_state else '',
-        html.div(
-            {'class':"w-50 p-4 border rounded shadow"},
-            html.h2(
-                {'class':"text-center mb-4"},
-                "Login"
-            ),
-            html.form(
-                {
-                    "on_submit":login_request,
-                },
-                InputComp(
-                    InputProps(
-                        name = 'email',
-                        value = payload.get('username'),
-                        on_change = lambda e: setPayload({**payload, "username": e['target']['value']}),
-                        placeholder = None,
-                        required = True,
-                        type = 'email',
-                        label = 'Email'
-                    )
+            html.script("window.location.href = '/home';") if page_state else '',
+            html.div(
+                {'class':"w-50 p-4 border rounded shadow transparent-box"},
+                html.h2(
+                    {'class':"text-center mb-4"},
+                    "Login"
                 ),
-                InputComp(
-                    InputProps(
-                        name='password',
-                        value=payload.get('password'),
-                        on_change=lambda e: setPayload({**payload, "password": e['target']['value']}),
-                        placeholder=None,
-                        required=True,
-                        type='password',
-                        label='Password'
-                    )
-                ),
+                html.form(
+                    {
+                        "on_submit":login_request,
+                    },
+                    InputComp(
+                        InputProps(
+                            name = 'email',
+                            value = payload.get('username'),
+                            on_change = lambda e: setPayload({**payload, "username": e['target']['value']}),
+                            placeholder = None,
+                            required = True,
+                            type = 'email',
+                            label = 'Email'
+                        )
+                    ),
+                    InputComp(
+                        InputProps(
+                            name='password',
+                            value=payload.get('password'),
+                            on_change=lambda e: setPayload({**payload, "password": e['target']['value']}),
+                            placeholder=None,
+                            required=True,
+                            type='password',
+                            label='Password'
+                        )
+                    ),
                 html.button(
-                    {"class":"btn btn-primary w-100",
-                     "on_click": button_loading},
-                    "Submit"
-                ) if not is_loading else Loading(),
+                        {   "class":"btn btn-primary w-100",
+                            "on_click": button_loading},
+                            "Submit"
+                    ) if not is_loading else Loading(),
+                ),
             ),
-        ),
-        ErrorToast(
-            ErrorProps(type=error.get("type"), message=error.get('message'), display=error.get('display'),
-                       callback=lambda e: set_error({**error, "display": False}))
+            ErrorToast(
+                ErrorProps(type=error.get("type"), message=error.get('message'), display=error.get('display'),
+                           callback=lambda e: set_error({**error, "display": False}))
+            )
         )
     )
 

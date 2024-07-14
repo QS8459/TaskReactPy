@@ -1,5 +1,5 @@
 from src.components.inputs.InputComponent import InputComp, InputProps;
-from src.components.navbar.navbar import NavBar, NavItemProps;
+from src.components.navbar.navbar import NavBar, NavBarProps;
 from src.components.loading.loading import Loading;
 from reactpy import use_state, html, component, event;
 from src.components.utils import check_auth;
@@ -49,8 +49,8 @@ def TaskAdd():
     layout = html._(
         NavBar(
             [
-                NavItemProps(label="Add Task", path="/task", is_active=True),
-                NavItemProps(label="About", path="/about", is_active=False)
+                NavBarProps(title="Add Task", url="/task"),
+                NavBarProps(title="About", url="/about")
             ]
         ),
         html.div(
