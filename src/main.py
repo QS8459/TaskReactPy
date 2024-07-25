@@ -26,7 +26,7 @@ def root():
             route('/login', pages.login()),
             route('/task', pages.addTask()),
             route('/task/list', comps.taskList()),
-            route('/test', comps.test()),
+            route('/test/', comps.test()),
             route("/verify_email", pages.vEmail()),
             route('/index', pages.index()),
             route("*", html.h1("Missing Link %%%"))

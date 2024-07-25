@@ -1,7 +1,7 @@
 from reactpy import html, component, use_state, use_effect, event;
 from pydantic.dataclasses import dataclass;
 from src.main import client;
-
+from src.components.pagination.pagination import PaginationProps, Pagination;
 
 local_style = html.style(
     """
@@ -40,24 +40,29 @@ class ListProps():
 
 @component
 def List(props: ListProps):
-    clk_id, set_clk_id = use_state(None);
     items, set_items = use_state([{}]);
-    @event
-    def on_click(id):
-        set_clk_id(id);
-        print("This is just clk_id",clk_id);
-        setattr(client,"clk_id",clk_id);
-        print("This is client clk_id",client.clk_id);
+    page, set_page = use_state(1);
+    perPage = 10;
+    total_items, set_total_items = use_state(0);
+    total_pages, set_total_pages = use_state(0);
+
 
     @use_effect
     def request():
+        nonlocal total_items, total_pages
         try:
-            set_items(client.get_r(
-                url = f'{client.url_v1}/{props.request_url}'
-            ).as_dict);
-
-        except Exception:
-            pass
+            r = client.get_r(
+                url = f'{client.url_v1}/{props.request_url}',
+                param = {
+                    'page':page,
+                    'perPage':perPage
+                }
+            ).as_dict
+            set_items(r.get('results'));
+            set_total_items(r.get('count'));
+            set_total_pages((total_items + perPage - 1) // perPage);
+        except Exception as e:
+            print("This is exception", e);
     layout = html._(
         local_style,
         html.div(
@@ -75,22 +80,24 @@ def List(props: ListProps):
 
                 [
                     html.tr(
-                        html.td(html.a(
-                            {
-                                "onclick": lambda _: set_clk_id(i.get('id')),
-                                'href':"#"
-                             },
+                        {
+                            "onclick": lambda task_id=i['id']: print(task_id.keys()),
+                            'cursor': 'pointer',
+                        },
+                        html.td(
+
                             i.get('id')
-                        )),
+                        ),
                         [html.td(v) for (k, v) in i.items() if not isinstance(v, dict) and k != 'id']
                     )
                     for i in items
                 ]
                 # [html.tr(html.td(i.get('id'))) for i in items],
                 # [html.tr(html.td(v) for(k,v) in i.items() if not isinstance(v,dict) and k !='id') for i in items]
-            )
-        )
-    ))
-    print(clk_id);
+                )
+            ),
+        ),
+            Pagination(PaginationProps(page = page,set_page = set_page,totalPages = total_pages))
+    )
     return layout;
 

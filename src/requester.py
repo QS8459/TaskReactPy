@@ -13,7 +13,7 @@ class APIResponse:
 
 class APIRequests:
 
-    def post_r(self, url:str, payload:dict, param:dict|None = None):
+    def post_r(self, url:str, payload:dict = {}, param:dict|None = None):
         request = S.post(url = url, data = payload, params = param);
         return self._object(request)
 
